@@ -1,5 +1,17 @@
 import streamlit as st
 
+if "logged_in" not in st.session_state:
+    st.session_state.logged_in = False
+
+if not st.session_state.logged_in:
+    st.switch_page("1_login.py")
+
+
+
+
+
+
+
 st.set_page_config(page_title="BrightKids", page_icon="🌈", layout="centered")
 
 # ---- App State ----
@@ -140,3 +152,4 @@ with c2:
     st.button("🧩 Daily Challenge", on_click=go, args=("challenge",))
 with c3:
     st.button("🏆 Parent View", on_click=go, args=("parent",))
+
