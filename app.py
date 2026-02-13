@@ -80,12 +80,6 @@ with col3:
 
 
 
-
-
-c1, c2, c3, c4 = st.columns(4)
-with c1: st.markdown("<div class='card'>➕<br><b>Math</b></div>", unsafe_allow_html=True)
-if "subject" not in st.session_state:
-    st.session_state.subject = "Math"  # default
 st.markdown("## 📚 Explore Subjects")
 c1, c2, c3, c4 = st.columns(4)
 
@@ -110,6 +104,32 @@ st.info(f"Currently learning: **{st.session_state.subject}**")
 st.divider()
 
 # --- Mini Lesson ---
+
+st.markdown(f"## 🧩 Today’s Mini Lesson ({st.session_state.subject})")
+
+if st.session_state.subject == "Math":
+    answer = st.radio("What is 7 + 5?", ["10", "11", "12", "13"])
+    if st.button("Check answer"):
+        if answer == "12":
+            st.success("Correct! 🎉 You earned a star!")
+            st.session_state.stars = st.session_state.get("stars", 0) + 1
+        else:
+            st.error("Oops! Try again 😊")
+
+elif st.session_state.subject == "Reading":
+    if st.button("Read a short story"):
+        st.success("Once upon a time, a brave little cat learned to read. 📖✨")
+
+elif st.session_state.subject == "Science":
+    if st.button("Show a fun science fact"):
+        st.info("🦕 Did you know? Dinosaurs lived over 65 million years ago!")
+
+elif st.session_state.subject == "Art":
+    idea = st.text_input("What should we draw today?")
+    if st.button("Get drawing idea"):
+        st.success(f"🎨 Draw a colorful {idea or 'rainbow dragon'}!")
+
+
 st.markdown("## 🧠 Today’s Mini Lesson (Math)")
 st.write("What is **7 + 5**?")
 
@@ -151,5 +171,6 @@ st.write("Stars: ⭐⭐⭐")
 # --- Footer ---
 st.markdown("---")
 st.markdown("<center><small>© 2026 BrightKids • Built with ❤️ using AI</small></center>", unsafe_allow_html=True)
+
 
 
