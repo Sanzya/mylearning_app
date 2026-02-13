@@ -1,5 +1,17 @@
 import streamlit as st
 
+# Protect Parent Dashboard
+if "logged_in" not in st.session_state or not st.session_state.logged_in:
+    st.error("You must log in first.")
+    st.stop()
+
+if st.session_state.role != "Parent":
+    st.error("Access denied. This page is for Parents only.")
+    st.stop()
+
+st.title("👨‍👩‍👧 Parent Dashboard")
+st.write("Welcome to the Parent Dashboard!")
+
 st.title("👨‍👩‍👧 Parent Dashboard")
 
 if not st.session_state.get("logged_in") or st.session_state.get("role") != "Parent":
@@ -21,3 +33,4 @@ if st.button("Add Child"):
 st.write("Your Children:")
 for child in st.session_state.children:
     st.markdown(f"- 🧒 {child}")
+
