@@ -101,8 +101,52 @@ elif st.session_state.page == "art":
         st.success(f"Try drawing a {idea or 'rainbow unicorn'} 🦄🌈")
     st.button("⬅️ Back to Home", on_click=go, args=("home",))
 
+# --- Mini Lesson ---
+st.markdown("## 🧠 Today’s Mini Lesson (Math)")
+st.write("What is **7 + 5**?")
+
+answer = st.radio("Choose one:", ["10", "11", "12", "13"], key="quiz1")
+
+if st.button("Check answer"):
+    if answer == "12":
+        st.success("🎉 Correct! Great job!")
+    else:
+        st.error("❌ Not quite. Try again!")
+
+st.divider()
+
+# --- AI Tutor ---
+st.markdown("## 🤖 Ask the AI Tutor")
+st.caption("Ask a question and the AI will explain in kid-friendly language.")
+
+question = st.text_input("Ask a question (e.g., What is multiplication?)")
+
+if st.button("Ask Tutor"):
+    if question:
+        with st.spinner("Thinking..."):
+            response = client.responses.create(
+                model="gpt-4.1-mini",
+                input=f"Explain this to a 9-year-old in simple, friendly language: {question}"
+            )
+            st.info(response.output_text)
+    else:
+        st.warning("Type a question first!")
+
+st.divider()
+
+# --- Progress ---
+st.markdown("## ⭐ Your Progress")
+st.progress(0.4)
+st.write("Badges earned: 🏅 🏅")
+st.write("Stars: ⭐⭐⭐")
+
+
+
+
+
 # ---- FOOTER ----
 st.divider()
 st.caption("© 2026 BrightKids • Learn with joy 💙")
+
 
 
