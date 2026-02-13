@@ -3,6 +3,10 @@ from openai import OpenAI
 import os
 from dotenv import load_dotenv
 
+
+
+
+
 # --- Setup ---
 load_dotenv()
 client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
@@ -80,9 +84,28 @@ with col3:
 
 c1, c2, c3, c4 = st.columns(4)
 with c1: st.markdown("<div class='card'>➕<br><b>Math</b></div>", unsafe_allow_html=True)
-with c2: st.markdown("<div class='card'>📖<br><b>Reading</b></div>", unsafe_allow_html=True)
-with c3: st.markdown("<div class='card'>🔬<br><b>Science</b></div>", unsafe_allow_html=True)
-with c4: st.markdown("<div class='card'>🎨<br><b>Art</b></div>", unsafe_allow_html=True)
+if "subject" not in st.session_state:
+    st.session_state.subject = "Math"  # default
+st.markdown("## 📚 Explore Subjects")
+c1, c2, c3, c4 = st.columns(4)
+
+with c1:
+    if st.button("➕ Math"):
+        st.session_state.subject = "Math"
+
+with c2:
+    if st.button("📖 Reading"):
+        st.session_state.subject = "Reading"
+
+with c3:
+    if st.button("🔬 Science"):
+        st.session_state.subject = "Science"
+
+with c4:
+    if st.button("🎨 Art"):
+        st.session_state.subject = "Art"
+
+st.info(f"Currently learning: **{st.session_state.subject}**")
 
 st.divider()
 
@@ -128,4 +151,5 @@ st.write("Stars: ⭐⭐⭐")
 # --- Footer ---
 st.markdown("---")
 st.markdown("<center><small>© 2026 BrightKids • Built with ❤️ using AI</small></center>", unsafe_allow_html=True)
+
 
