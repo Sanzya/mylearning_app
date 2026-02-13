@@ -1,0 +1,3 @@
+email,password,role
+parent@example.com,$2b$12$abc123hashedpassword,Parent
+child@example.com,$2b$12$xyz456hashedpassword,Child
