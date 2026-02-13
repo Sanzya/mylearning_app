@@ -44,6 +44,40 @@ st.markdown("""
 
 # --- Subjects ---
 st.markdown("## 📚 Explore Subjects")
+st.divider()
+st.markdown("## 💳 Plans & Pricing")
+st.caption("Choose a monthly plan that works for your family.")
+
+col1, col2, col3 = st.columns(3)
+
+with col1:
+    st.markdown("### 🆓 Free")
+    st.markdown("**$0 / month**")
+    st.write("• Access to basic lessons")
+    st.write("• Limited quizzes")
+    st.write("• No AI tutor")
+    st.button("Start Free", key="free_plan")
+
+with col2:
+    st.markdown("### ⭐ Basic")
+    st.markdown("**$9 / month**")
+    st.write("• All subjects unlocked")
+    st.write("• Weekly quizzes")
+    st.write("• AI tutor (limited)")
+    st.button("Choose Basic", key="basic_plan")
+
+with col3:
+    st.markdown("### 🚀 Pro")
+    st.markdown("**$19 / month**")
+    st.write("• Unlimited lessons")
+    st.write("• Daily quizzes & games")
+    st.write("• AI tutor (unlimited)")
+    st.button("Choose Pro", key="pro_plan")
+
+
+
+
+
 c1, c2, c3, c4 = st.columns(4)
 with c1: st.markdown("<div class='card'>➕<br><b>Math</b></div>", unsafe_allow_html=True)
 with c2: st.markdown("<div class='card'>📖<br><b>Reading</b></div>", unsafe_allow_html=True)
@@ -94,3 +128,4 @@ st.write("Stars: ⭐⭐⭐")
 # --- Footer ---
 st.markdown("---")
 st.markdown("<center><small>© 2026 BrightKids • Built with ❤️ using AI</small></center>", unsafe_allow_html=True)
+
