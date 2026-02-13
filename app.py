@@ -140,10 +140,3 @@ with c2:
     st.button("🧩 Daily Challenge", on_click=go, args=("challenge",))
 with c3:
     st.button("🏆 Parent View", on_click=go, args=("parent",))
-
-
-
-
-
-
-
