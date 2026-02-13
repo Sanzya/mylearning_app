@@ -1,6 +1,7 @@
 import streamlit as st
 import pandas as pd
 import bcrypt
+import os
 
 st.set_page_config(page_title="Login - BrightKids")
 
@@ -14,7 +15,12 @@ st.title("🔐 Login")
 email = st.text_input("Email")
 password = st.text_input("Password", type="password")
 
-users = pd.read_csv("users.csv")
+# Load users.csv safely
+if os.path.exists("users.csv"):
+    users = pd.read_csv("users.csv")
+else:
+    st.error("User database not found. Please add users.csv.")
+    users = pd.DataFrame(columns=["email","password","role"])
 
 def authenticate(email, password):
     user = users[users['email'] == email]
@@ -34,6 +40,10 @@ if st.button("Login"):
     else:
         st.error("Invalid credentials")
 
+# ✅ Role-based navigation check
 if st.session_state.logged_in:
-    st.info("You are logged in. Use sidebar to navigate.")
+    if st.session_state.role == "Parent":
+        st.switch_page("pages/parent_dashboard.py")
+    elif st.session_state.role == "Child":
+        st.switch_page("pages/child_profile.py")
 
