@@ -12,8 +12,6 @@ if st.session_state.role != "Parent":
 st.title("👨‍👩‍👧 Parent Dashboard")
 st.write("Welcome to the Parent Dashboard!")
 
-st.title("👨‍👩‍👧 Parent Dashboard")
-
 if not st.session_state.get("logged_in") or st.session_state.get("role") != "Parent":
     st.warning("Please login as Parent to access this page.")
     st.stop()
@@ -33,4 +31,5 @@ if st.button("Add Child"):
 st.write("Your Children:")
 for child in st.session_state.children:
     st.markdown(f"- 🧒 {child}")
+
 
