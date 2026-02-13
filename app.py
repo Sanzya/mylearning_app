@@ -7,6 +7,8 @@ if "page" not in st.session_state:
     st.session_state.page = "home"
 if "stars" not in st.session_state:
     st.session_state.stars = 0
+if "badges" not in st.session_state:
+    st.session_state.badges = []
 
 # ---- Styling ----
 st.markdown("""
@@ -25,9 +27,6 @@ st.markdown("""
     text-align: center;
     box-shadow: 0 6px 16px rgba(0,0,0,0.05);
 }
-.small {
-    color: #666;
-}
 </style>
 """, unsafe_allow_html=True)
 
@@ -39,8 +38,7 @@ def go(page):
 if st.session_state.page == "home":
     st.markdown("""
     <div class="hero">
-        <span>✨ New</span>
-        <h1>BrightKids</h1>
+        <h1>BrightKids 🌈</h1>
         <p>Fun lessons, games, and an AI tutor for children aged 6–12.</p>
     </div>
     """, unsafe_allow_html=True)
@@ -65,8 +63,9 @@ if st.session_state.page == "home":
         st.button("Start Art", on_click=go, args=("art",))
 
     st.divider()
-    st.markdown("### ⭐ Your Progress")
-    st.write(f"Stars earned: {'⭐' * st.session_state.stars if st.session_state.stars else 'No stars yet'}")
+    st.markdown("### ⭐ Progress")
+    st.write(f"Stars: {'⭐' * st.session_state.stars if st.session_state.stars else 'No stars yet'}")
+    st.button("👨‍👩‍👧 Parent Dashboard", on_click=go, args=("parent",))
 
 # ---- MATH PAGE ----
 elif st.session_state.page == "math":
@@ -74,79 +73,77 @@ elif st.session_state.page == "math":
     q = st.radio("What is 8 + 4?", ["10", "11", "12", "13"])
     if st.button("Check answer"):
         if q == "12":
-            st.success("Correct! ⭐ You earned a star!")
+            st.success("Correct! ⭐")
             st.session_state.stars += 1
+            if "Math Star" not in st.session_state.badges:
+                st.session_state.badges.append("Math Star 🧮")
         else:
-            st.error("Oops, try again!")
+            st.error("Try again!")
 
-    st.button("⬅️ Back to Home", on_click=go, args=("home",))
+    st.button("⬅️ Back", on_click=go, args=("home",))
 
 # ---- READING PAGE ----
 elif st.session_state.page == "reading":
     st.markdown("## 📖 Reading Time")
-    st.write("Once upon a time, a curious little fox learned how to read...")
-    st.button("⬅️ Back to Home", on_click=go, args=("home",))
+    st.write("Once upon a time, a little fox learned to read every day.")
+    st.button("⬅️ Back", on_click=go, args=("home",))
 
 # ---- SCIENCE PAGE ----
 elif st.session_state.page == "science":
     st.markdown("## 🔬 Science Fun Fact")
-    st.info("🌍 The Earth goes around the Sun once every year!")
-    st.button("⬅️ Back to Home", on_click=go, args=("home",))
+    st.info("The Sun is a star 🌟")
+    st.button("⬅️ Back", on_click=go, args=("home",))
 
 # ---- ART PAGE ----
 elif st.session_state.page == "art":
     st.markdown("## 🎨 Art Corner")
-    idea = st.text_input("What would you like to draw today?")
+    idea = st.text_input("What would you like to draw?")
     if st.button("Get idea"):
-        st.success(f"Try drawing a {idea or 'rainbow unicorn'} 🦄🌈")
+        st.success(f"Try drawing a {idea or 'dragon flying over a castle'} 🐉🏰")
+    st.button("⬅️ Back", on_click=go, args=("home",))
+
+# ---- DAILY CHALLENGE ----
+elif st.session_state.page == "challenge":
+    st.markdown("## 🧩 Daily Challenge")
+    q = st.radio("What is 5 × 3?", ["10", "12", "15", "20"])
+    if st.button("Submit"):
+        if q == "15":
+            st.success("Awesome! 🎉 You completed today's challenge!")
+            st.session_state.stars += 2
+        else:
+            st.error("Oops! Try again tomorrow.")
+    st.button("⬅️ Back", on_click=go, args=("home",))
+
+# ---- AI TUTOR (FREE MOCK) ----
+elif st.session_state.page == "ai":
+    st.markdown("## 🤖 AI Tutor")
+    q = st.text_input("Ask a question")
+    if st.button("Ask"):
+        if q:
+            st.info(f"Great question! Here's a simple answer: {q} means learning step by step with practice 😊")
+    st.button("⬅️ Back", on_click=go, args=("home",))
+
+# ---- PARENT DASHBOARD ----
+elif st.session_state.page == "parent":
+    st.markdown("## 👨‍👩‍👧 Parent Dashboard")
+    st.metric("Stars Earned", st.session_state.stars)
+    st.write("Badges:", ", ".join(st.session_state.badges) if st.session_state.badges else "No badges yet")
+    st.progress(min(st.session_state.stars / 10, 1.0))
     st.button("⬅️ Back to Home", on_click=go, args=("home",))
 
-# --- Mini Lesson ---
-st.markdown("## 🧠 Today’s Mini Lesson (Math)")
-st.write("What is **7 + 5**?")
-
-answer = st.radio("Choose one:", ["10", "11", "12", "13"], key="quiz1")
-
-if st.button("Check answer"):
-    if answer == "12":
-        st.success("🎉 Correct! Great job!")
-    else:
-        st.error("❌ Not quite. Try again!")
-
+# ---- Footer Navigation ----
 st.divider()
-
-# --- AI Tutor ---
-st.markdown("## 🤖 Ask the AI Tutor")
-st.caption("Ask a question and the AI will explain in kid-friendly language.")
-
-question = st.text_input("Ask a question (e.g., What is multiplication?)")
-
-if st.button("Ask Tutor"):
-    if question:
-        with st.spinner("Thinking..."):
-            response = client.responses.create(
-                model="gpt-4.1-mini",
-                input=f"Explain this to a 9-year-old in simple, friendly language: {question}"
-            )
-            st.info(response.output_text)
-    else:
-        st.warning("Type a question first!")
-
-st.divider()
-
-# --- Progress ---
-st.markdown("## ⭐ Your Progress")
-st.progress(0.4)
-st.write("Badges earned: 🏅 🏅")
-st.write("Stars: ⭐⭐⭐")
+c1, c2, c3 = st.columns(3)
+with c1:
+    st.button("🤖 AI Tutor", on_click=go, args=("ai",))
+with c2:
+    st.button("🧩 Daily Challenge", on_click=go, args=("challenge",))
+with c3:
+    st.button("🏆 Parent View", on_click=go, args=("parent",))
 
 
 
 
-
-# ---- FOOTER ----
-st.divider()
-st.caption("© 2026 BrightKids • Learn with joy 💙")
 
 
 
